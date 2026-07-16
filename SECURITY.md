@@ -9,7 +9,7 @@ For responsible disclosure, security consulting inquiries, or private assessment
 - Private keys or certificate material
 - Session tokens or authentication cookies
 - Client-identifying information
-- Proof-of-exploitation tokens (flags, markers, or ownership proofs)
+- Sensitive proof markers or ownership-verification artifacts
 
 **What this repository DOES contain:**
 - Technical vulnerability descriptions (CWE-classified)
