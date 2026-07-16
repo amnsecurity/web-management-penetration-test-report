@@ -1,9 +1,9 @@
 <div align="center">
 
-# Penetration Test: Web Management Server - Dual Exploitation Chain
+# Penetration Test: Web Management Server - Multi-Stage Security Assessment
 
 **Consultant-Style Cybersecurity Report**  
-Sanitized penetration testing report for a web management platform, covering exposure analysis, compromise impact, remediation, and mitigation strategy.
+Sanitized penetration testing report for a web management platform, covering exposure analysis, security impact, remediation, and mitigation strategy.
 
 <p>
   <img src="https://img.shields.io/badge/Report-Penetration%20Testing%20Report-red?style=for-the-badge" alt="Report Type" />
@@ -42,7 +42,7 @@ Sanitized penetration testing report for a web management platform, covering exp
 > For a fast review, start with the Executive Summary and Impact sections. For technical depth, continue into Technical Analysis and Remediation.
 
 ## 🏷️ Title
-Penetration Test: Web Management Server - Dual Exploitation Chain
+Penetration Test: Web Management Server - Multi-Stage Security Assessment
 
 
 ---
@@ -64,14 +64,20 @@ Penetration Test: Web Management Server - Dual Exploitation Chain
 ## 🔬 Technical Analysis
 The weakness was assessed from an application-security and infrastructure-risk perspective. The core issue is classified as **Security Control Weakness** and was documented in a sanitized form suitable for public portfolio publication.
 
-**Finding 1: Unauthenticated Backup API (CWE-862)**
+> [!WARNING]
+> **Finding 1: Unauthenticated Backup API (CWE-862)**
+
 The `/api/backup` endpoint on the Nginx-UI web management application provided a full system backup without requiring authentication. The response contained an `X-Backup-Security` header carrying the encryption key and IV, making decryption straightforward.
 
-**Finding 2: Weak Credential Strength (CWE-521)**
-The extracted `database.db` file contained bcrypt-hashed passwords. Using hashcat with the rockyou wordlist, the password for user `jonathan` was successfully cracked.
+> [!WARNING]
+> **Finding 2: Weak Credential Strength (CWE-521)**
 
-**Finding 3: TOCTOU Race in snap-confine (CWE-367 — CVE-2026-3888)**
-The snap subsystem's `snap-update-ns` component creates a temporary `.snap` directory as staging ground for mount namespace operations. A TOCTOU window exists between reading files from this staging directory and performing mount operations. By replacing the directory contents with attacker-controlled copies at the precise moment, a malicious dynamic linker can be injected. On subsequent invocation of the SUID `snap-confine` binary, the compromised linker executes attacker code with root privileges, creating a SUID shell for persistent access.
+The extracted `database.db` file contained bcrypt-hashed passwords. Offline password-audit techniques confirmed that at least one non-privileged account used a weak credential susceptible to recovery.
+
+> [!WARNING]
+> **Finding 3: TOCTOU Race in snap-confine (CWE-367 — CVE-2026-3888)**
+
+The snap subsystem's `snap-update-ns` component creates a temporary `.snap` directory as staging ground for mount namespace operations. A TOCTOU window exists between reading files from this staging directory and performing mount operations. By replacing the directory contents with attacker-controlled copies at the precise moment, a attacker-controlled runtime component can be injected. On subsequent invocation of the SUID `snap-confine` binary, the compromised linker executes unauthorized code in a privileged context, creating a elevated execution context for persistent access.
 
 
 ---
